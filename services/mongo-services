@@ -1,0 +1,20 @@
+var MongoClient = require('mongodb').MongoClient;
+const dotenv = require("dotenv");
+dotenv.config();
+const url = process.env.MONGO_URL;
+
+async  function findAll(dataBase, collection) {
+
+    let db, client;
+    try {
+      client = await MongoClient.connect(url, { useNewUrlParser: true });
+      db = client.db(dataBase);
+      var query = {};
+      return await db.collection(collection).find(query).toArray();
+    } finally {
+      client.close();
+    }
+
+}
+
+module.exports.findAll = findAll;
